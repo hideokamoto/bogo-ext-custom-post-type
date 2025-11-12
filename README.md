@@ -1,0 +1,1 @@
+# bogo-ext-custom-post-type
