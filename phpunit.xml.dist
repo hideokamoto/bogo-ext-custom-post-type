@@ -24,8 +24,4 @@
             <file>bogo-custom-post-types.php</file>
         </include>
     </coverage>
-
-    <php>
-        <env name="WP_PHPUNIT__TESTS_CONFIG" value="tests/wp-config.php"/>
-    </php>
 </phpunit>

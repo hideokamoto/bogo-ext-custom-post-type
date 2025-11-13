@@ -61,7 +61,6 @@ composer.lock
 # PHPUnit
 .phpunit.result.cache
 phpunit.xml
-/tests/wp-config.php
 
 # IDE
 .vscode/
