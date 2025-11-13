@@ -1,5 +1,5 @@
 {
-  "name": "hideokamoto/bogo-custom-post-types-support",
+  "name": "hideokamoto/bogo-ext-custom-post-type",
   "description": "Bogoで使用するカスタム投稿タイプを選択できるプラグイン",
   "type": "wordpress-plugin",
   "license": "GPL-2.0-or-later",

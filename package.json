@@ -1,5 +1,5 @@
 {
-  "name": "bogo-custom-post-types-support",
+  "name": "bogo-ext-custom-post-type",
   "version": "1.0.0",
   "description": "Bogoで使用するカスタム投稿タイプを選択できるプラグイン",
   "scripts": {
