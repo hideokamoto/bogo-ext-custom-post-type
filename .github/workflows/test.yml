@@ -1,0 +1,53 @@
+name: PHPUnit Tests
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        php: ['7.4', '8.0', '8.1', '8.2']
+        wordpress: ['6.3', '6.4', 'latest']
+
+    name: PHP ${{ matrix.php }} / WordPress ${{ matrix.wordpress }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, mysql, mysqli, pdo_mysql, bcmath, soap, intl, gd, exif, iconv
+          coverage: none
+
+      - name: Install Node dependencies
+        run: npm install
+
+      - name: Install Composer dependencies
+        run: composer install --prefer-dist --no-progress --no-suggest
+
+      - name: Start wp-env
+        run: |
+          npm run wp-env:start
+          # Wait for WordPress to be ready
+          sleep 10
+
+      - name: Run tests
+        run: npm run test:php
+
+      - name: Stop wp-env
+        if: always()
+        run: npm run wp-env:stop
