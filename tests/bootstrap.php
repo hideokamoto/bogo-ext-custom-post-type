@@ -12,7 +12,13 @@ require_once dirname(__DIR__) . '/vendor/autoload.php';
 $_tests_dir = getenv('WP_TESTS_DIR');
 
 if (!$_tests_dir) {
-    $_tests_dir = rtrim(sys_get_temp_dir(), '/\\') . '/wordpress-tests-lib';
+    // wp-env uses /wordpress-phpunit for test library
+    $_tests_dir = '/wordpress-phpunit';
+}
+
+// Fallback to wordpress-develop location for wp-env
+if (!file_exists("{$_tests_dir}/includes/functions.php") && file_exists('/wordpress-phpunit/includes/functions.php')) {
+    $_tests_dir = '/wordpress-phpunit';
 }
 
 // Forward custom PHPUnit Polyfills configuration to PHPUnit bootstrap file.
@@ -22,7 +28,8 @@ if (false !== $_phpunit_polyfills_path) {
 }
 
 if (!file_exists("{$_tests_dir}/includes/functions.php")) {
-    echo "Could not find {$_tests_dir}/includes/functions.php, have you run bin/install-wp-tests.sh ?" . PHP_EOL; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+    echo "Could not find {$_tests_dir}/includes/functions.php" . PHP_EOL;
+    echo "Make sure you're running tests inside wp-env with: npm run test:php" . PHP_EOL;
     exit(1);
 }
 
