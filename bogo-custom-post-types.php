@@ -32,8 +32,8 @@ class Bogo_Custom_Post_Types_Support {
      */
     public function add_admin_menu() {
         add_options_page(
-            'Bogo Custom Post Types',
-            'Bogo Custom Post Types',
+            __('Bogo Custom Post Types', 'bogo-ext-custom-post-type'),
+            __('Bogo Custom Post Types', 'bogo-ext-custom-post-type'),
             'manage_options',
             'bogo-cpt-support',
             [$this, 'settings_page']
@@ -56,22 +56,24 @@ class Bogo_Custom_Post_Types_Support {
 
         ?>
         <div class="wrap">
-            <h1>Bogo Custom Post Types Support</h1>
-            <p>Bogoで多言語化するカスタム投稿タイプを選択してください。</p>
+            <h1><?php echo esc_html__('Bogo Custom Post Types Support', 'bogo-ext-custom-post-type'); ?></h1>
+            <p><?php esc_html_e('Bogoで多言語化するカスタム投稿タイプを選択してください。', 'bogo-ext-custom-post-type'); ?></p>
 
             <?php if (empty($post_types)): ?>
                 <div class="notice notice-warning inline">
-                    <p>カスタム投稿タイプが登録されていません。</p>
+                    <p><?php esc_html_e('カスタム投稿タイプが登録されていません。', 'bogo-ext-custom-post-type'); ?></p>
                 </div>
             <?php else: ?>
                 <form method="post" action="options.php">
                     <?php settings_fields('bogo_cpt_support_group'); ?>
                     <table class="form-table" role="presentation">
                         <tr>
-                            <th scope="row">有効にするカスタム投稿タイプ</th>
+                            <th scope="row"><?php esc_html_e('有効にするカスタム投稿タイプ', 'bogo-ext-custom-post-type'); ?></th>
                             <td>
                                 <fieldset>
-                                    <legend class="screen-reader-text"><span>有効にするカスタム投稿タイプ</span></legend>
+                                    <legend class="screen-reader-text">
+                                        <span><?php esc_html_e('有効にするカスタム投稿タイプ', 'bogo-ext-custom-post-type'); ?></span>
+                                    </legend>
                                     <?php foreach ($post_types as $post_type): ?>
                                         <p>
                                             <label>
@@ -90,12 +92,12 @@ class Bogo_Custom_Post_Types_Support {
                             </td>
                         </tr>
                     </table>
-                    <?php submit_button('設定を保存'); ?>
+                    <?php submit_button(__('設定を保存', 'bogo-ext-custom-post-type')); ?>
                 </form>
             <?php endif; ?>
 
             <hr class="wp-header-end">
-            <p class="description">注意: 設定変更後は「設定」→「パーマリンク」→「変更を保存」を実行してください。</p>
+            <p class="description"><?php esc_html_e('注意: 設定変更後は「設定」→「パーマリンク」→「変更を保存」を実行してください。', 'bogo-ext-custom-post-type'); ?></p>
         </div>
         <?php
     }
@@ -132,7 +134,15 @@ add_action('plugins_loaded', 'bogo_cpt_support_init');
 function bogo_cpt_support_admin_notice() {
     ?>
     <div class="notice notice-error">
-        <p><strong>Bogo Custom Post Types Support:</strong> このプラグインはBogoプラグインが必要です。</p>
+        <p>
+            <?php
+            printf(
+                /* translators: %s: Plugin name */
+                esc_html__('%s このプラグインはBogoプラグインが必要です。', 'bogo-ext-custom-post-type'),
+                '<strong>' . esc_html__('Bogo Custom Post Types Support:', 'bogo-ext-custom-post-type') . '</strong>'
+            );
+            ?>
+        </p>
     </div>
     <?php
 }
