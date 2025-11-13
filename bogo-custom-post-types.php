@@ -60,26 +60,33 @@ class Bogo_Custom_Post_Types_Support {
             <p>Bogoで多言語化するカスタム投稿タイプを選択してください。</p>
 
             <?php if (empty($post_types)): ?>
-                <p style="color: #d63638;">カスタム投稿タイプが登録されていません。</p>
+                <div class="notice notice-warning inline">
+                    <p>カスタム投稿タイプが登録されていません。</p>
+                </div>
             <?php else: ?>
                 <form method="post" action="options.php">
                     <?php settings_fields('bogo_cpt_support_group'); ?>
-                    <table class="form-table">
+                    <table class="form-table" role="presentation">
                         <tr>
                             <th scope="row">有効にするカスタム投稿タイプ</th>
                             <td>
-                                <?php foreach ($post_types as $post_type): ?>
-                                    <label style="display: block; margin-bottom: 8px;">
-                                        <input
-                                            type="checkbox"
-                                            name="<?php echo esc_attr($this->option_name); ?>[]"
-                                            value="<?php echo esc_attr($post_type->name); ?>"
-                                            <?php checked(in_array($post_type->name, (array)$selected_types)); ?>
-                                        >
-                                        <strong><?php echo esc_html($post_type->label); ?></strong>
-                                        <code style="margin-left: 8px;"><?php echo esc_html($post_type->name); ?></code>
-                                    </label>
-                                <?php endforeach; ?>
+                                <fieldset>
+                                    <legend class="screen-reader-text"><span>有効にするカスタム投稿タイプ</span></legend>
+                                    <?php foreach ($post_types as $post_type): ?>
+                                        <p>
+                                            <label>
+                                                <input
+                                                    type="checkbox"
+                                                    name="<?php echo esc_attr($this->option_name); ?>[]"
+                                                    value="<?php echo esc_attr($post_type->name); ?>"
+                                                    <?php checked(in_array($post_type->name, (array)$selected_types)); ?>
+                                                >
+                                                <strong><?php echo esc_html($post_type->label); ?></strong>
+                                                <code><?php echo esc_html($post_type->name); ?></code>
+                                            </label>
+                                        </p>
+                                    <?php endforeach; ?>
+                                </fieldset>
                             </td>
                         </tr>
                     </table>
@@ -87,8 +94,8 @@ class Bogo_Custom_Post_Types_Support {
                 </form>
             <?php endif; ?>
 
-            <hr style="margin-top: 30px;">
-            <p><small>注意: 設定変更後は「設定」→「パーマリンク」→「変更を保存」を実行してください。</small></p>
+            <hr class="wp-header-end">
+            <p class="description">注意: 設定変更後は「設定」→「パーマリンク」→「変更を保存」を実行してください。</p>
         </div>
         <?php
     }
