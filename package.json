@@ -1,0 +1,30 @@
+{
+  "name": "bogo-custom-post-types-support",
+  "version": "1.0.0",
+  "description": "Bogoで使用するカスタム投稿タイプを選択できるプラグイン",
+  "scripts": {
+    "wp-env": "wp-env",
+    "wp-env:start": "wp-env start",
+    "wp-env:stop": "wp-env stop",
+    "wp-env:destroy": "wp-env destroy",
+    "test": "npm run wp-env:start && npm run test:php",
+    "test:php": "wp-env run tests-cli --env-cwd=wp-content/plugins/bogo-ext-custom-post-type vendor/bin/phpunit",
+    "test:setup": "wp-env run tests-cli --env-cwd=wp-content/plugins/bogo-ext-custom-post-type composer install"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hideokamoto/bogo-ext-custom-post-type.git"
+  },
+  "keywords": [
+    "wordpress",
+    "plugin",
+    "bogo",
+    "i18n",
+    "custom-post-types"
+  ],
+  "author": "Hidetaka Okamoto",
+  "license": "GPL-2.0-or-later",
+  "devDependencies": {
+    "@wordpress/env": "^9.0.0"
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "name": "hideokamoto/bogo-custom-post-types-support",
+  "description": "Bogoで使用するカスタム投稿タイプを選択できるプラグイン",
+  "type": "wordpress-plugin",
+  "license": "GPL-2.0-or-later",
+  "authors": [
+    {
+      "name": "Hidetaka Okamoto",
+      "email": "info@hidetaka.dev"
+    }
+  ],
+  "require": {
+    "php": ">=7.4"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "^9.6",
+    "yoast/phpunit-polyfills": "^2.0"
+  },
+  "autoload": {
+    "classmap": [
+      "bogo-custom-post-types.php"
+    ]
+  },
+  "scripts": {
+    "test": "phpunit"
+  }
+}
