@@ -118,7 +118,7 @@ class Bogo_Custom_Post_Types_Support {
  * プラグイン初期化
  */
 function bogo_cpt_support_init() {
-    if (function_exists('bogo_localizable_post_types')) {
+    if (class_exists('Bogo')) {
         new Bogo_Custom_Post_Types_Support();
     } else {
         add_action('admin_notices', 'bogo_cpt_support_admin_notice');

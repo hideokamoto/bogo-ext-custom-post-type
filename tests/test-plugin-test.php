@@ -30,8 +30,8 @@ class PluginTest extends TestCase {
      * Test plugin initialization without Bogo
      */
     public function test_plugin_init_without_bogo() {
-        // Bogoが存在しない場合、クラスがインスタンス化されないことを確認
-        $this->assertFalse(function_exists('bogo_localizable_post_types'));
+        // Bogoクラスが存在しない場合を確認
+        $this->assertFalse(class_exists('Bogo'));
     }
 
     /**
