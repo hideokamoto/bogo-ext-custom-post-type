@@ -84,9 +84,6 @@ class Bogo_Custom_Post_Types_Support {
         }
 
         $selected_types = get_option($this->option_name, []);
-        if (!is_array($selected_types)) {
-            $selected_types = [];
-        }
 
         ?>
         <div class="wrap">
@@ -149,7 +146,7 @@ class Bogo_Custom_Post_Types_Support {
 
         $selected_types = get_option($this->option_name, []);
 
-        if (!empty($selected_types) && is_array($selected_types)) {
+        if (!empty($selected_types)) {
             return array_unique(array_merge($localizable, $selected_types));
         }
 

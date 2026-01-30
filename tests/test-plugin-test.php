@@ -64,16 +64,10 @@ class PluginTest extends TestCase {
             'label' => 'Movies'
         ]);
 
-        $reflection = new ReflectionClass($instance);
-        $method = $reflection->getMethod('sanitize_post_types');
-        $method->setAccessible(true);
-
         $input = ['book', 'movie'];
-        $result = $method->invoke($instance, $input);
+        $result = $instance->sanitize_post_types($input);
 
-        $this->assertIsArray($result);
-        $this->assertContains('book', $result);
-        $this->assertContains('movie', $result);
+        $this->assertEqualsCanonicalizing(['book', 'movie'], $result);
     }
 
     /**
@@ -82,16 +76,12 @@ class PluginTest extends TestCase {
     public function test_sanitize_post_types_with_invalid_input() {
         $instance = new Bogo_Custom_Post_Types_Support();
 
-        $reflection = new ReflectionClass($instance);
-        $method = $reflection->getMethod('sanitize_post_types');
-        $method->setAccessible(true);
-
         // 文字列を渡した場合
-        $result = $method->invoke($instance, 'not_an_array');
+        $result = $instance->sanitize_post_types('not_an_array');
         $this->assertEquals([], $result);
 
         // nullを渡した場合
-        $result = $method->invoke($instance, null);
+        $result = $instance->sanitize_post_types(null);
         $this->assertEquals([], $result);
     }
 
@@ -106,17 +96,10 @@ class PluginTest extends TestCase {
             'label' => 'Books'
         ]);
 
-        $reflection = new ReflectionClass($instance);
-        $method = $reflection->getMethod('sanitize_post_types');
-        $method->setAccessible(true);
-
         $input = ['book', 'invalid_type', 'another_invalid'];
-        $result = $method->invoke($instance, $input);
+        $result = $instance->sanitize_post_types($input);
 
-        $this->assertIsArray($result);
-        $this->assertContains('book', $result);
-        $this->assertNotContains('invalid_type', $result);
-        $this->assertNotContains('another_invalid', $result);
+        $this->assertEqualsCanonicalizing(['book'], $result);
     }
 
     /**
@@ -131,11 +114,7 @@ class PluginTest extends TestCase {
         // メソッドをテスト
         $result = $instance->add_custom_post_types(['post', 'page']);
 
-        $this->assertIsArray($result);
-        $this->assertContains('book', $result);
-        $this->assertContains('movie', $result);
-        $this->assertContains('post', $result);
-        $this->assertContains('page', $result);
+        $this->assertEqualsCanonicalizing(['post', 'page', 'book', 'movie'], $result);
 
         // Clean up
         delete_option('bogo_cpt_support_post_types');
@@ -153,12 +132,7 @@ class PluginTest extends TestCase {
         // メソッドをテスト（既存に 'post' が含まれている）
         $result = $instance->add_custom_post_types(['post', 'page']);
 
-        $this->assertIsArray($result);
-        // 重複が除去されているか確認
-        $this->assertEquals(count($result), count(array_unique($result)));
-        $this->assertContains('post', $result);
-        $this->assertContains('page', $result);
-        $this->assertContains('book', $result);
+        $this->assertEqualsCanonicalizing(['post', 'page', 'book'], $result);
 
         // Clean up
         delete_option('bogo_cpt_support_post_types');
@@ -174,8 +148,7 @@ class PluginTest extends TestCase {
 
         // 文字列を渡した場合
         $result = $instance->add_custom_post_types('not_an_array');
-        $this->assertIsArray($result);
-        $this->assertContains('book', $result);
+        $this->assertEqualsCanonicalizing(['book'], $result);
 
         // Clean up
         delete_option('bogo_cpt_support_post_types');
