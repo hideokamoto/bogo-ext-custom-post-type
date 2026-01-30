@@ -44,15 +44,49 @@ class Bogo_Custom_Post_Types_Support {
      * 設定を登録
      */
     public function register_settings() {
-        register_setting('bogo_cpt_support_group', $this->option_name);
+        register_setting('bogo_cpt_support_group', $this->option_name, [
+            'type' => 'array',
+            'sanitize_callback' => [$this, 'sanitize_post_types'],
+            'default' => []
+        ]);
+    }
+
+    /**
+     * 投稿タイプのサニタイゼーション
+     *
+     * @param mixed $input ユーザー入力データ
+     * @return array サニタイズされた投稿タイプの配列
+     */
+    public function sanitize_post_types($input) {
+        if (!is_array($input)) {
+            return [];
+        }
+
+        $valid_post_types = get_post_types(['public' => true, '_builtin' => false]);
+        if (!is_array($valid_post_types)) {
+            return [];
+        }
+
+        return array_filter($input, function($post_type) use ($valid_post_types) {
+            return in_array($post_type, $valid_post_types, true);
+        });
     }
 
     /**
      * 設定画面のHTML
+     *
+     * @return void
      */
     public function settings_page() {
         $post_types = get_post_types(['public' => true, '_builtin' => false], 'objects');
+        if (!is_array($post_types)) {
+            $post_types = [];
+        }
+
         $selected_types = get_option($this->option_name, []);
+        if (!is_array($selected_types)) {
+            $selected_types = [];
+        }
 
         ?>
         <div class="wrap">
@@ -104,12 +138,19 @@ class Bogo_Custom_Post_Types_Support {
 
     /**
      * カスタム投稿タイプをBogoの多言語対応に追加
+     *
+     * @param array $localizable 既存の多言語化対応投稿タイプ
+     * @return array 更新された多言語化対応投稿タイプ
      */
     public function add_custom_post_types($localizable) {
+        if (!is_array($localizable)) {
+            $localizable = [];
+        }
+
         $selected_types = get_option($this->option_name, []);
 
         if (!empty($selected_types) && is_array($selected_types)) {
-            return array_merge($localizable, $selected_types);
+            return array_unique(array_merge($localizable, $selected_types));
         }
 
         return $localizable;
